@@ -1,0 +1,40 @@
+class SentenceAnalyser:
+    # This constructor method and it has one instance variable
+    def __init__(self):
+        self.sentenceanalyzer={'Clauses':0,
+                               'Complete':0,
+                               'Questions':0}
+
+    # This method represents the number of occurences for each of the English words in a readable format.
+    def __str__(self):
+        result=''                   # create new variable
+        for item in self.sentenceanalyzer:
+            result+=str(item)+':'+str(self.sentenceanalyzer[item])+'\n'
+        return result               # return variable
+
+    # This method performs the analysis process. It accepts a decoded sequence. 
+    def analyse_sentences(self,decoded_sequence):
+        if decoded_sequence=="An invalid character":    # if an invalid character in decoded sequence, then it returns error message.
+            return "An invalid character"
+        else:                                           # if valid characters then analysing the decoded sequence
+            decoded_sequence=decoded_sequence.split("\n")
+            for items in decoded_sequence:
+                for item in items:
+                    if items[0]=='.' or items[0]==',' or items[0]=='?' or items[0]==' ':  # if sentence begins with these chacters (.,?), exit from the loop.
+                        break
+                    elif (items[0]==' ' and items[1]=='.') or (items[0]==' ' and items[1]==',') or (items[0]==' ' and items[1]=='?'):
+                        pass
+                    else:
+                        if item=='.':                           # if item is equal to '.', then increase the number of complete sentences
+                            self.sentenceanalyzer['Complete']+=1
+                        elif item ==',':
+                            self.sentenceanalyzer['Clauses']+=1 # if item is equal to ',', then increase the number of clauses 
+
+                        elif item=='?':                         # if item is equal to '?', then increase the number of question sentences
+                            self.sentenceanalyzer['Questions']+=1
+                        else:
+                            pass                              # if word is not equal to these chacters (.,?) then don't execute nothing.
+                        
+            return self.sentenceanalyzer                # return the dictionary
+            
+        
