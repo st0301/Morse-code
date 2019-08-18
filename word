@@ -1,0 +1,31 @@
+import re
+class WordAnalyser:
+    # This constructor method and it has one instance variable
+    def __init__(self):
+        self.wordanalyzer={}
+
+    # This method represents the number of occurences for each of the English words in a readable format.
+    def __str__(self):
+        result=''                   # create new variable
+        for item in self.wordanalyzer:
+            result+=str(item)+' occurs '+str(self.wordanalyzer[item])+' times\n'
+        return result               # return variable
+
+    # This method performs the analysis process. It accepts a decoded sequence. 
+    def analyse_words(self,decoded_sequence):
+        new_words=[]
+        decoded_sequence=decoded_sequence.split('\n')
+        for item in decoded_sequence:
+            if item=="An invalid character":    # if an invalid character in decoded sequence, then ignore it.
+                pass
+            else:
+                new_words.append(item)          # if a valid character in decoded sequence, then append it .
+        new_words=' '.join(str(item) for item in new_words)   # convert from list to string
+        pattern=re.compile('\W')                                  
+        new_words=pattern.sub(' ',new_words)                            # replace  anything that is not a letter, digit or underscore.
+        new_words=new_words.split()                             
+        for word in new_words:
+            self.wordanalyzer[word]=self.wordanalyzer.get(word,0)+1   # count the number of each words in decoded sequence.
+        return self.wordanalyzer                                            # return the dictionary
+                
+
