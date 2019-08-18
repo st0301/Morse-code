@@ -1,0 +1,29 @@
+import re
+class CharacterAnalyser:
+    
+    #This constructor method and it has one instance varibale.
+    def __init__(self):
+        self.analyzing_characters={}
+        
+    # This method represents the number of occurences for each characters in a readable format  
+    def __str__(self):
+        show_table=''                            # create new variable
+        for item in self.analyzing_characters:
+            show_table+="Character "+str(item)+" is : "+str(self.analyzing_characters[item])+" times\n"   # add each item in the show_table variable
+        return show_table   # return it
+    
+    # This method performs the analysis process. It accepts a decoded sequence. 
+    def analyse_characters(self,decoded_sequence):
+        decoded_sequence=decoded_sequence.split('\n')
+        for items in decoded_sequence:
+            if items=="An invalid character":              # if an invalid character in decoded sequence, then pass it. 
+                pass
+            else:
+                for item in items:
+                    if item=='.' or item==',' or item=='?' or item==' ':  # if item is equal to these chacters (.,?) then pass it.
+                        pass
+                    else:
+                        self.analyzing_characters[item]=self.analyzing_characters.get(item,0)+1
+
+        return self.analyzing_characters        # return the dictionary
+           
