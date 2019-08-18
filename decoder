@@ -1,0 +1,121 @@
+class Decoder:
+    
+    #This constructor method and it has one instance varibale.
+    def __init__(self):
+        self.dictionary_morse = {
+        'A': '01', 
+	'B': '1000', 
+	'C': '1010', 
+	'D': '100', 
+	'E': '0', 
+	'F': '0010', 
+	'G': '110', 
+	'H': '0000', 
+	'I': '00', 
+	'J': '0111', 
+	'K': '101', 
+	'L': '0100', 
+	'M': '11', 
+	'N': '10', 
+	'O': '111', 
+	'P': '0110', 
+	'Q': '1101', 
+	'R': '010', 
+	'S': '000', 
+	'T': '1', 
+	'U': '001', 
+	'V': '0001', 
+	'W': '011', 
+	'X': '1001', 
+	'Y': '1011', 
+	'Z': '1100',
+        '0': '11111', 
+	'1': '01111', 
+	'2': '00111', 
+	'3': '00011', 
+	'4': '00001', 
+	'5': '00000', 
+	'6': '10000', 
+	'7': '11000', 
+	'8': '11100', 
+	'9': '11110',
+        '.': '010101',
+        ',': '110011',
+        '?': '001100'}
+
+    # This method displays the Morse code representation table in a readable format.    
+    def __str__(self):
+        show_table=''                            # create new variable
+        for item in self.dictionary_morse:
+            show_table+="For character "+str(item)+" is morse code: "+str(self.dictionary_morse[item])+"\n"   # add each item in the show_table variable
+        return show_table   # return it
+    
+    # This method performs the decoding process. It accepts morse code sequences.  
+    def decode(self,morse_code_sequence):
+        count=0               # this variable is used to count the number of character '*'.
+        decoded_sequence=''   
+        temporal_word =''     
+        for item in morse_code_sequence:      # iterate over the morse code sequences
+            if item == '*':                                             # if find the character '*'
+                if count == 0:                                           # if count varibale is equal to 0, then increase by one the count variable.
+                    count+=1                                            
+                    if self.analyze(temporal_word)== True:              # decode the items that are in temporal_word. 
+                        decoded_sequence+=self.check(temporal_word)     # If the value exists in the dictionary, then decode it
+                    else:
+                        break                                           # if doesn't exist then exits from the loop.
+                    temporal_word=''
+                    continue
+                elif count==1:                                            # if count varibale is equal to 1, then increase by one the count variable.
+                    count+=1
+                    continue
+                elif count==2:                                            # if count == 2, then reset count variable,set it to 0 .
+                    count+=1
+                    decoded_sequence+=' '                               # if count == 2, add space bar in decoded sequence.
+                elif count > 2:
+                    return "An invalid character"                       # if more than 3 stars , then it is an invalid character
+                else:
+                    return "An invalid character" 
+            else:
+                if count == 2:                                          # if 2 stars , then it is an invalid character                
+                    count=0
+                    return "An invalid character" 
+                else:
+                    count=0
+                    temporal_word+=item                                     # append item to temporal_word.
+            
+            if temporal_word == self.dictionary_morse['.'] or temporal_word == self.dictionary_morse[','] or temporal_word == self.dictionary_morse['?']:
+                    break                  # if temporal_word variable is equal to one of three punctuation characters (‘.’,‘,’,‘?’), exit from the loop.
+        
+        if self.analyze(temporal_word)== True:         # if the item exists in the morse code dictionary, decode it and add to decoded_sequence variable.
+            decoded_sequence+=self.check(temporal_word)
+            return decoded_sequence
+        else:                                           # if it's not in dictionary, return error.
+            return "An invalid character"
+    
+    # This method checks the condition where a specific item is in the Morse code dictionary.
+    # If an item in the Morse code dictionary, it returns the related key.
+    def check(self,items):
+        self.items=items
+        decoded=''
+        for each in self.dictionary_morse:
+            if items == self.dictionary_morse[each]:
+                    decoded+=each
+        return decoded
+    
+    # This method analyze the condition where a specific item does exist in the Morse code dictionary.
+    # If an item is in the  Morse code dictionary, it returns true. Otherwise, it returns false.
+    def analyze(self,items):
+        self.items=items
+        items=items.split()
+        Error = False
+        for item in items:
+            found=False
+            for each in self.dictionary_morse:
+                if item == self.dictionary_morse[each]:
+                    found = True
+            if found== False:
+                Error=True
+        if Error==True:
+            return False
+        else:
+            return True
